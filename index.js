@@ -79,15 +79,27 @@ const onlyUniques = (a, b, ...n) => {
     let resultArray = array.filter((elem, index, array) => array.indexOf(elem) === index); 
     return resultArray; 
 }
+// OR:: 
+const onlyUniques1 = (...n) => n.filter((elem, index) => n.indexOf(elem) === index); 
 
-onlyUniques("gato", "pollo", "cerdo", "cerdo"); //["gato", "pollo", "cerdo"]
-onlyUniques(1, 1, 2, 2, 3, 6, 7, 8); //[1, 2, 3, 6, 7, 8]
+onlyUniques1("gato", "pollo", "cerdo", "cerdo"); //["gato", "pollo", "cerdo"]
+onlyUniques1(1, 1, 2, 2, 3, 6, 7, 8); //[1, 2, 3, 6, 7, 8]
+
+// OR
+function onlyUniques2(...arg) {
+    let result = []; 
+    for (let argument of arg) {
+        if (!result.includes(argument)) result = [...result, argument]; 
+    }
+    return result; 
+}
+onlyUniques2("gato", "pollo", "cerdo", "cerdo"); //["gato", "pollo", "cerdo"]
 
 // 10.- Escriba una función llamada combineAllArrays que pueda recibir cualquier cantidad de arrays como argumentos y los combine todos en un solo array.
-const combineAllArrays = (array1, array2, ...arrayN) => {
-    let arraysArray = [...array1, ...array2]; 
-    for (let array of arrayN) {
-        arraysArray.push(...array); 
+const combineAllArrays = (...arrays) => {
+    let arraysArray = []; 
+    for (let array of arrays) {
+        arraysArray = [...arraysArray, ...array]; 
     }
     console.log(arraysArray); 
     return arraysArray; 
@@ -96,14 +108,32 @@ const combineAllArrays = (array1, array2, ...arrayN) => {
 console.log(combineAllArrays([3, 6, 7, 8], [2, 7, 3, 1])); // [3, 6, 7, 8, 2, 7, 3, 1]
 console.log(combineAllArrays([2, 7, 3, 1], [2, 7, 4, 12], [2, 44, 22, 7, 3, 1]));  // [2, 7, 3, 1, 2, 7, 4, 12, 2, 44, 22, 7, 3, 1]
 
+//  OR:: 
+const combineAllArrays2 = (...arraysYargumentos) => arraysYargumentos.reduce((acumulador, actual) => [...acumulador, ...actual], []);
+    // concatena todos los argumentos en un único array. NO SOLO VALE PARA SUMAR, une en un solo elemento, pero puede mantener todos los argumentos intactos, simplemente los envuelve en un elemento único.  
+    console.log(combineAllArrays2([3, 6, 7, 8], [2, 7, 3, 1]));// [3, 6, 7, 8, 2, 7, 3, 1]
+    console.log(combineAllArrays2([2, 7, 3, 1], [2, 7, 4, 12], [2, 44, 22, 7, 3, 1]));// [2, 7, 3, 1, 2, 7, 4, 12, 2, 44, 22, 7, 3, 1]
+
 // 11.- Escriba una función llamada sumAndSquare que reciba cualquier número de argumentos, los eleve al cuadrado y devuelva la suma de todos los valores cuadrados.
 const sumAndSquare = (...arguments) => {
     let numbers = arguments.filter(num => typeof num === "number"); 
-    
     numbers = numbers.map(num => num**2); 
     return numbers.reduce((a, b) => a+b); 
 }
 
 sumAndSquare("tetas", false, 2, 44, 56, "tu madre"); 
 
+// OR:: 
+const sumAndSquare1 = (...arguments) => {
+    let total = 0; 
+    for (num of arguments) {
+        total += num**2;
+    }  
+    return total; 
+}
 
+console.log("con la segunda funcion: " + sumAndSquare1(2, 44, 56, 8));
+
+const sumAndSquare2 = (...arguments) => arguments.filter(num => typeof num === "number")
+                                        .reduce((acc, num) => acc+num**2); 
+console.log("con la tercera funcion: " + sumAndSquare2(2, 44, 56, 8)); 
